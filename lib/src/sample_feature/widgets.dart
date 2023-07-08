@@ -97,7 +97,7 @@ class LevelInputField extends StatelessWidget {
             // floatingLabelAlignment: FloatingLabelAlignment.center,
             floatingLabelBehavior: FloatingLabelBehavior.never,
             contentPadding: const EdgeInsets.all(10),
-            isCollapsed: true,
+            // isCollapsed: false,
             constraints: const BoxConstraints(maxWidth: 100),
             border: const OutlineInputBorder(
               // borderSide: BorderSide(width: 2.0),
@@ -153,3 +153,53 @@ class CardCalculatedValues extends StatelessWidget {
     );
   }
 }
+
+
+// class LevelInputField extends StatelessWidget {
+//   const LevelInputField({
+//     super.key,
+//     required this.onLevelChanged,
+//     required this.hintText,
+//     required this.labelText,
+//   });
+
+//   final ValueChanged<double> onLevelChanged;
+//   final String hintText;
+//   final String labelText;
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Column(
+//       children: [
+//         Text(labelText),
+//         TextFormField(
+//           initialValue: '',
+//           decoration: InputDecoration(
+//             // labelText: labelText,
+//             hintText: hintText,
+//             // floatingLabelAlignment: FloatingLabelAlignment.center,
+//             floatingLabelBehavior: FloatingLabelBehavior.never,
+//             contentPadding: const EdgeInsets.all(10),
+//             isCollapsed: true,
+//             constraints: const BoxConstraints(maxWidth: 100),
+//             border: const OutlineInputBorder(
+//               // borderSide: BorderSide(width: 2.0),
+//               borderRadius: BorderRadius.all(Radius.circular(10)),
+//             ),
+//             // contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+//           ),
+//           keyboardType: TextInputType.number,
+//           validator: (value) {
+//             if (value?.isEmpty ?? true) {
+//               return 'Please enter the lime weight';
+//             }
+//             return null;
+//           },
+//           onChanged: (value) {
+//             onLevelChanged(double.tryParse(value) ?? 0);
+//           },
+//         ),
+//       ],
+//     );
+//   }
+// }
