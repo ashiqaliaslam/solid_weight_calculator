@@ -83,39 +83,6 @@ class TimeToDuration {
   }
 }
 
-// class TimeToDuration {
-//   static String durationAsString(TimeOfDay startTime, TimeOfDay endTime) {
-//     final startDateTime = _getDateTime(startTime);
-//     final endDateTime = _getDateTime(endTime);
-//     final difference = endDateTime.difference(startDateTime);
-//     return _formatDuration(difference);
-//   }
-
-//   static Duration durationAsTime(TimeOfDay startTime, TimeOfDay endTime) {
-//     final startDateTime = _getDateTime(startTime);
-//     final endDateTime = _getDateTime(endTime);
-//     return endDateTime.difference(startDateTime);
-//   }
-
-//   static DateTime _getDateTime(TimeOfDay time) {
-//     final now = DateTime.now().toUtc();
-//     final tomorrow = DateTime.now().add(const Duration(days: 1)).toUtc();
-//     return DateTime(
-//       now.year,
-//       now.month,
-//       now.day,
-//       time.hour,
-//       time.minute,
-//     );
-//   }
-
-//   static String _formatDuration(Duration duration) {
-//     final hours = duration.inHours.toString().padLeft(2, '0');
-//     final minutes = (duration.inMinutes % 60).toString().padLeft(2, '0');
-//     return '$hours:$minutes';
-//   }
-// }
-
 class LevelInputField extends StatelessWidget {
   const LevelInputField({
     super.key,
@@ -134,8 +101,8 @@ class LevelInputField extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(labelText),
-        TextFormField(
-          initialValue: '',
+        TextField(
+          // initialValue: '',
           decoration: InputDecoration(
             // labelText: labelText,
             hintText: hintText,
@@ -151,12 +118,6 @@ class LevelInputField extends StatelessWidget {
             // contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 10),
           ),
           keyboardType: TextInputType.number,
-          validator: (value) {
-            if (value?.isEmpty ?? true) {
-              return 'Please enter the lime weight';
-            }
-            return null;
-          },
           onChanged: (value) {
             onLevelChanged(double.tryParse(value) ?? 0);
           },
@@ -202,52 +163,120 @@ class CardCalculatedValues extends StatelessWidget {
   }
 }
 
+class ProjectedLimeWeight extends StatelessWidget {
+  const ProjectedLimeWeight({
+    super.key,
+    required this.totalWeight,
+    required this.totalDuration,
+  });
 
-// class LevelInputField extends StatelessWidget {
-//   const LevelInputField({
-//     super.key,
-//     required this.onLevelChanged,
-//     required this.hintText,
-//     required this.labelText,
-//   });
+  final double totalWeight;
+  final Duration totalDuration;
 
-//   final ValueChanged<double> onLevelChanged;
-//   final String hintText;
-//   final String labelText;
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        smallText('Projected Lime Consumed'),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            largeBoldText(
+                projectedWeight(totalWeight, totalDuration).toStringAsFixed(2)),
+            const SizedBox(width: 5),
+            largeText('Ton'),
+          ],
+        ),
+      ],
+    );
+  }
+}
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return Column(
-//       children: [
-//         Text(labelText),
-//         TextFormField(
-//           initialValue: '',
-//           decoration: InputDecoration(
-//             // labelText: labelText,
-//             hintText: hintText,
-//             // floatingLabelAlignment: FloatingLabelAlignment.center,
-//             floatingLabelBehavior: FloatingLabelBehavior.never,
-//             contentPadding: const EdgeInsets.all(10),
-//             isCollapsed: true,
-//             constraints: const BoxConstraints(maxWidth: 100),
-//             border: const OutlineInputBorder(
-//               // borderSide: BorderSide(width: 2.0),
-//               borderRadius: BorderRadius.all(Radius.circular(10)),
-//             ),
-//             // contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 10),
-//           ),
-//           keyboardType: TextInputType.number,
-//           validator: (value) {
-//             if (value?.isEmpty ?? true) {
-//               return 'Please enter the lime weight';
-//             }
-//             return null;
-//           },
-//           onChanged: (value) {
-//             onLevelChanged(double.tryParse(value) ?? 0);
-//           },
-//         ),
-//       ],
-//     );
-//   }
-// }
+class LimeConsumptionDuration extends StatelessWidget {
+  const LimeConsumptionDuration({
+    super.key,
+    required this.totalDuration,
+  });
+
+  final Duration totalDuration;
+
+  @override
+  Widget build(BuildContext context) {
+    return Flexible(
+      flex: 1,
+      child: Column(
+        children: [
+          mediumText('Total Duration'),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const SizedBox(width: 5),
+              largeText(formattedDuration(totalDuration)),
+              const SizedBox(width: 5),
+              largeText('Hours'),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class DurationMoreThan24Hours extends StatelessWidget {
+  const DurationMoreThan24Hours({
+    super.key,
+    required this.totalDuration,
+  });
+
+  final Duration totalDuration;
+
+  @override
+  Widget build(BuildContext context) {
+    return Flexible(
+      flex: 1,
+      child: Column(
+        children: [
+          errorText('⛔️ The total duration cannot exceed 24 hours.'),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const SizedBox(width: 5),
+              largeErrorText(formattedDuration(totalDuration)),
+              const SizedBox(width: 5),
+              largeErrorText('Hours'),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class LimeConsumed extends StatelessWidget {
+  const LimeConsumed({
+    super.key,
+    required this.totalWeight,
+  });
+
+  final double totalWeight;
+
+  @override
+  Widget build(BuildContext context) {
+    return Flexible(
+      flex: 1,
+      child: Column(
+        children: [
+          mediumText('Total Lime Weight'),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              largeText(totalWeight.toStringAsFixed(2)),
+              const SizedBox(width: 5),
+              largeText('Ton'),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
