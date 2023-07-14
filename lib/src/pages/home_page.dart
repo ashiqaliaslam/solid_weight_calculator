@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:solid_weight_calculator/src/sample_feature/form_fields.dart';
+import 'package:solid_weight_calculator/src/sample_feature/widgets.dart';
 
 import '../models/functions.dart';
 import '../models/lime_data.dart';
@@ -21,7 +22,7 @@ class _LimeDataFormState extends State<HomePage> {
   Duration totalDuration = const Duration();
   final _formKey = GlobalKey<FormState>();
 
-  double _estimatedWeight(double totalWeight, Duration totalDuration) {
+  double projectedWeight(double totalWeight, Duration totalDuration) {
     if (totalDuration.inMinutes == 0) {
       return 0;
     }
@@ -34,17 +35,9 @@ class _LimeDataFormState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     var now = DateTime.now().toUtc();
-    // var tomorrow = DateTime.now().add(const Duration(days: 1)).toUtc();
     var timeStartToday = TimeOfDay.fromDateTime(
       DateTime(now.year, now.month, now.day, 0, 0),
     );
-    // var timeStartTomorrow = TimeOfDay.fromDateTime(
-    //   DateTime(tomorrow.year, tomorrow.month, tomorrow.day, 0, 0),
-    // );
-
-    // var i = TimeOfDay.fromDateTime(
-    //   DateTime(now.year, now.month, now.day, 0, 0).add(const Duration(days: 1)),
-    // );
 
     return GestureDetector(
       onTap: () {
@@ -93,10 +86,6 @@ class _LimeDataFormState extends State<HomePage> {
                         ],
                       ),
                     ),
-                    // const VerticalDivider(
-                    //   color: Colors.black,
-                    //   thickness: 2,
-                    // ),
                     if (totalDuration.inMinutes > 1440)
                       Flexible(
                         flex: 1,
@@ -145,7 +134,7 @@ class _LimeDataFormState extends State<HomePage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         largeBoldText(
-                            _estimatedWeight(totalWeight, totalDuration)
+                            projectedWeight(totalWeight, totalDuration)
                                 .toStringAsFixed(2)),
                         const SizedBox(width: 5),
                         largeText('Ton'),
@@ -166,18 +155,8 @@ class _LimeDataFormState extends State<HomePage> {
                             calculateTotals();
                           });
                         },
-                        // onUpdate: (details) {
-                        //   calculateTotals();
-                        // },
                         child: LimeDataField(
                           limeData: limeDataList[index],
-                          onDelete: () {
-                            setState(() {
-                              limeDataList.removeAt(index);
-                              calculateTotals();
-                            });
-                          },
-                          // onDelete: Dismissible(),
                           onStartLevelChanged: (startLevel) {
                             setState(() {
                               limeDataList[index].startLevel = startLevel;
@@ -237,16 +216,21 @@ class _LimeDataFormState extends State<HomePage> {
                       child: const Text('Add Data'),
                     ),
                     const SizedBox(width: 10),
-                    const ElevatedButton(
-                      onPressed: null,
-                      child: Row(
+                    ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          limeDataList.removeRange(0, limeDataList.length);
+                          calculateTotals();
+                        });
+                      },
+                      child: const Row(
                         children: [
                           Icon(Icons.clear_all),
                           SizedBox(width: 10),
                           Text('Clear All'),
                         ],
                       ),
-                    )
+                    ),
                   ],
                 ),
               ],
@@ -261,36 +245,46 @@ class _LimeDataFormState extends State<HomePage> {
     totalWeight = 0.0;
     totalDuration = const Duration();
 
-    var now = DateTime.now().toUtc();
+    // var now = DateTime.now().toUtc();
     // var tomorrow = DateTime.now().add(const Duration(days: 1)).toUtc();
 
     for (var limeData in limeDataList) {
-      // totalWeight += limeData.weight;
+      final limeConsumptionDuration =
+          TimeToDuration.durationAsTime(limeData.startTime, limeData.endTime);
+      totalDuration += limeConsumptionDuration;
 
       double startLevel = limeData.startLevel;
       double endLevel = limeData.endLevel;
       totalWeight += startLevel - endLevel;
 
-      DateTime startDateTime = DateTime(
-        now.year,
-        now.month,
-        now.day,
-        limeData.startTime.hour,
-        limeData.startTime.minute,
-      );
-
-      DateTime endDateTime = DateTime(
-        now.year,
-        now.month,
-        now.day,
-        limeData.endTime.hour,
-        limeData.endTime.minute,
-      );
-      totalDuration += endDateTime.difference(startDateTime);
+      // DateTime startDateTime = DateTime(
+      //   now.year,
+      //   now.month,
+      //   now.day,
+      //   limeData.startTime.hour,
+      //   limeData.startTime.minute,
+      // );
+      // if (limeDataList.last.endTime == const TimeOfDay(hour: 0, minute: 0)) {
+      //   DateTime endDateTime = DateTime(
+      //     tomorrow.year,
+      //     tomorrow.month,
+      //     tomorrow.day,
+      //     tomorrow.hour,
+      //     tomorrow.minute,
+      //     // limeData.endTime.hour,
+      //     // limeData.endTime.minute,
+      //   );
+      //   totalDuration += endDateTime.difference(startDateTime);
+      // } else {
+      // DateTime endDateTime = DateTime(
+      //   now.year,
+      //   now.month,
+      //   now.day,
+      //   limeData.endTime.hour,
+      //   limeData.endTime.minute,
+      // );
+      // totalDuration += endDateTime.difference(startDateTime);
+      // }
     }
-  }
-
-  void removeTatals() {
-    limeDataList.clear();
   }
 }
