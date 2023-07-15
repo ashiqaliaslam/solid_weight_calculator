@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:solid_weight_calculator/src/pages/form_fields.dart';
-import 'package:solid_weight_calculator/src/pages/widgets.dart';
+import 'package:solid_weight_calculator/src/ui/pages/form_fields.dart';
+import 'package:solid_weight_calculator/src/ui/widgets/duration_more_than_24_hours.dart';
+import 'package:solid_weight_calculator/src/ui/widgets/lime_consumed.dart';
+import 'package:solid_weight_calculator/src/ui/widgets/lime_consumption_duration.dart';
+import 'package:solid_weight_calculator/src/ui/widgets/projected_lime_weight.dart';
+import 'package:solid_weight_calculator/src/ui/widgets/time_to_duration.dart';
 
-import '../models/lime_data.dart';
-import '../settings/settings_view.dart';
+import '../../models/lime_data.dart';
+import '../../settings/settings_view.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});

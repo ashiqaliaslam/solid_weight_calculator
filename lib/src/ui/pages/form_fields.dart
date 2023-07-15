@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:solid_weight_calculator/src/pages/widgets.dart';
+import 'package:solid_weight_calculator/src/ui/widgets/card_calculated_values.dart';
+import 'package:solid_weight_calculator/src/ui/widgets/level_input_field.dart';
+import 'package:solid_weight_calculator/src/ui/widgets/time_to_duration.dart';
 
-import '../models/lime_data.dart';
+import '../../models/lime_data.dart';
+import '../widgets/time_picker_button.dart';
 
 class LimeDataField extends StatelessWidget {
   final LimeData limeData;
