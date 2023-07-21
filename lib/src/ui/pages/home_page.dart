@@ -85,7 +85,7 @@ class _LimeDataFormState extends State<HomePage> {
                           calculateTotals();
                         });
                       },
-                      child: LimeDataField(
+                      child: LimeDataCard(
                         limeData: limeDataList[index],
                         onStartLevelChanged: (startLevel) {
                           setState(() {

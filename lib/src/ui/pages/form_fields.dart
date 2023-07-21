@@ -6,14 +6,14 @@ import 'package:solid_weight_calculator/src/ui/widgets/time_to_duration.dart';
 import '../../models/lime_data.dart';
 import '../widgets/time_picker_button.dart';
 
-class LimeDataField extends StatelessWidget {
+class LimeDataCard extends StatelessWidget {
   final LimeData limeData;
   final ValueChanged<double> onStartLevelChanged;
   final ValueChanged<double> onEndLevelChanged;
   final ValueChanged<TimeOfDay> onStartTimeChanged;
   final ValueChanged<TimeOfDay> onEndTimeChanged;
 
-  const LimeDataField({
+  const LimeDataCard({
     super.key,
     required this.limeData,
     required this.onStartLevelChanged,
@@ -47,14 +47,14 @@ class LimeDataField extends StatelessWidget {
                     Row(
                       children: [
                         Expanded(
-                          child: LevelInputField(
+                          child: LevelInputTextField(
                               onLevelChanged: onStartLevelChanged,
                               hintText: '50',
                               labelText: 'Start Level'),
                         ),
                         const SizedBox(width: 8),
                         Expanded(
-                          child: LevelInputField(
+                          child: LevelInputTextField(
                               onLevelChanged: onEndLevelChanged,
                               hintText: '30',
                               labelText: 'End Level'),
